@@ -2,6 +2,7 @@
 // Created by Vio on 26.02.2021.
 //
 #include "geometry.h"
+//spaces
 Point::Point(){
     x=0;
     y=0;
@@ -147,6 +148,7 @@ Triangle& Triangle::operator=(const Triangle& other){
 }
 bool Triangle::hasRightAngle() const{
     double length[3];
+    //sqrt and pow 2
     length[0]=sqrt(pow(arr_point[1].getX()-arr_point[0].getX(),2)+(pow(arr_point[1].getY()-arr_point[0].getY(),2)));
 //        std::cout<<length[0];
     length[1]=sqrt(pow(arr_point[2].getX()-arr_point[1].getX(),2)+(pow(arr_point[2].getY()-arr_point[1].getY(),2)));
@@ -195,6 +197,7 @@ RegularPolygon::RegularPolygon(const RegularPolygon& other)
         :Polygon(other)
 {}
 RegularPolygon& RegularPolygon::operator=(const RegularPolygon& other){
+    //use from base class
     if(&other== this){
         return *this;
     }

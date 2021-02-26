@@ -72,6 +72,7 @@ public:
 
 };
 
+//area and perimeter
 class RegularPolygon: public Polygon{
 public:
     RegularPolygon(int n_points=0,Point* arr_points={});
