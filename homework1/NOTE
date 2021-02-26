@@ -1,0 +1,38 @@
+Cloning https://github.com/Wavio8/IS-2020-prog-2-sem/homework1
+Cloning finished
+It's OK
+geometry.cpp: In member function 'Point& Point::operator=(const Point&)':
+geometry.cpp:29:1: warning: control reaches end of non-void function [-Wreturn-type]
+   29 | }
+      | ^
+geometry.cpp: In member function 'PolygonalChain& PolygonalChain::operator=(const PolygonalChain&)':
+geometry.cpp:47:1: warning: control reaches end of non-void function [-Wreturn-type]
+   47 | }
+      | ^
+geometry.cpp: In member function 'ClosedPolygonalChain& ClosedPolygonalChain::operator=(const ClosedPolygonalChain&)':
+geometry.cpp:81:1: warning: control reaches end of non-void function [-Wreturn-type]
+   81 | }
+      | ^
+geometry.cpp: In member function 'Polygon& Polygon::operator=(const Polygon&)':
+geometry.cpp:107:1: warning: control reaches end of non-void function [-Wreturn-type]
+  107 | }
+      | ^
+geometry.cpp: In member function 'Triangle& Triangle::operator=(const Triangle&)':
+geometry.cpp:147:1: warning: control reaches end of non-void function [-Wreturn-type]
+  147 | }
+      | ^
+geometry.cpp: In member function 'Trapezoid& Trapezoid::operator=(const Trapezoid&)':
+geometry.cpp:183:1: warning: control reaches end of non-void function [-Wreturn-type]
+  183 | }
+      | ^
+geometry.cpp: In member function 'RegularPolygon& RegularPolygon::operator=(const RegularPolygon&)':
+geometry.cpp:203:1: warning: control reaches end of non-void function [-Wreturn-type]
+  203 | }
+      | ^
+main.cpp: In function 'void PolygonsCheck()':
+main.cpp:47:12: warning: deleting object of polymorphic class type 'Trapezoid' which has non-virtual destructor might cause undefined behavior [-Wdelete-non-virtual-dtor]
+   47 |     delete trap;
+      |            ^~~~
+
+
+
