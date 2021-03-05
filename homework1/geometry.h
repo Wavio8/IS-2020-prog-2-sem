@@ -34,6 +34,7 @@ public:
 
 class PolygonalChain {
 protected:
+	//todo u dont need n_point
     int n_point;
     vector<Point> arr_point;
 

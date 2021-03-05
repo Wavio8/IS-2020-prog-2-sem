@@ -102,6 +102,8 @@ Polygon::Polygon(const Polygon &other)
 
 
 double Polygon::area() const {
+    //todo S is capital? we are not in maths
+    //todo you dont need double
     double S = 0;
     if (n_point > 2) {
         int x0 = arr_point[0].getX();
@@ -136,11 +138,13 @@ Triangle::Triangle(const Triangle &other)
 
 
 bool Triangle::hasRightAngle() const {
+    //todo u dont need double too
     double length[3];
     length[0] = pow(arr_point[1].getX() - arr_point[0].getX(), 2) + (pow(arr_point[1].getY() - arr_point[0].getY(), 2));
     length[1] = pow(arr_point[2].getX() - arr_point[1].getX(), 2) + (pow(arr_point[2].getY() - arr_point[1].getY(), 2));
     length[2] = pow(arr_point[0].getX() - arr_point[2].getX(), 2) + (pow(arr_point[0].getY() - arr_point[2].getY(), 2));
 
+    //todo return expression
     if ((length[0] + length[1] == length[2]) || (length[0] + length[2] == length[1]) ||
         (length[1] + length[2] == length[0])) {
         return true;
@@ -189,6 +193,7 @@ double RegularPolygon::perimeter() const {
 
 double RegularPolygon::area() const {
     double S = 0;
+    //todo const should be static private
     double pi = 3.1415926535;
     double P = RegularPolygon::perimeter();
     if (n_point > 2) {
