@@ -34,14 +34,13 @@ public:
 
 class PolygonalChain {
 protected:
-	//todo u dont need n_point
-    int n_point;
+    //fixed u dont need n_point
     vector<Point> arr_point;
 
 public:
     explicit PolygonalChain(int n_points = 0, Point *arr_points = {});
 
-    PolygonalChain(const PolygonalChain &other);
+    PolygonalChain(const PolygonalChain &other)=default;
 
     PolygonalChain &operator=(const PolygonalChain &other);
 
@@ -111,6 +110,8 @@ public:
 };
 
 class RegularPolygon : public Polygon {
+private:
+    const double  pi = 3.1415926535;
 public:
     RegularPolygon(int n_points = 0, Point *arr_points = {});
 
