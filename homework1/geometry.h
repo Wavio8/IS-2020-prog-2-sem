@@ -34,13 +34,13 @@ public:
 
 class PolygonalChain {
 protected:
-    //fixed u dont need n_point
+
     vector<Point> arr_point;
 
 public:
     explicit PolygonalChain(int n_points = 0, Point *arr_points = {});
 
-    PolygonalChain(const PolygonalChain &other)=default;
+    PolygonalChain(const PolygonalChain &other);
 
     PolygonalChain &operator=(const PolygonalChain &other);
 
@@ -61,10 +61,9 @@ public:
     explicit ClosedPolygonalChain(int n_points = 0, Point *arr_points = {});
 
     ClosedPolygonalChain(const ClosedPolygonalChain &other);
-    
-    //todo i dont think it works
-    
-    using PolygonalChain::operator=;
+    //fixed i dont think it works
+
+    ClosedPolygonalChain &operator=(const ClosedPolygonalChain &other);
 
     double perimeter() const override;
 
@@ -77,7 +76,7 @@ public:
 
     Polygon(const Polygon &other);
 
-    using PolygonalChain::operator=;
+    Polygon &operator=(const Polygon &other);
 
     virtual double area() const;
 
@@ -90,7 +89,7 @@ public:
 
     Triangle(const Triangle &other);
 
-    using PolygonalChain::operator=;
+    Triangle &operator=(const Triangle &other);
 
     bool hasRightAngle() const;
 
@@ -103,7 +102,7 @@ public:
 
     Trapezoid(const Trapezoid &other);
 
-    using PolygonalChain::operator=;
+    Trapezoid &operator=(const Trapezoid &other);
 
     double height() const;
 
@@ -113,14 +112,15 @@ public:
 
 class RegularPolygon : public Polygon {
 private:
-    //todo static
-    const double  pi = 3.1415926535;
+    //fixed static
+     static double pi;
+
 public:
     RegularPolygon(int n_points = 0, Point *arr_points = {});
 
     RegularPolygon(const RegularPolygon &other);
 
-    using PolygonalChain::operator=;
+    RegularPolygon &operator=(const RegularPolygon &other);
 
     virtual double perimeter() const;
 
