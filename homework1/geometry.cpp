@@ -31,46 +31,44 @@ Point &Point::operator=(const Point &other) {
     return *this;
 }
 
-PolygonalChain::PolygonalChain(int n_points, Point *arr_points)
-        : n_point(n_points) {
-    for (int i = 0; i < n_point; i++) {
+PolygonalChain::PolygonalChain(int n_points, Point *arr_points){
+    for (int i = 0; i < n_points; i++) {
         arr_point.push_back(arr_points[i]);
     }
 }
 
-PolygonalChain::PolygonalChain(const PolygonalChain &other)
-        : n_point(other.n_point), arr_point(other.arr_point) {}
+
 
 PolygonalChain &PolygonalChain::operator=(const PolygonalChain &other) {
     if (&other == this) {
         return *this;
     }
-    n_point = other.n_point;
+
     arr_point = other.arr_point;
     return *this;
 }
 
 int PolygonalChain::getN() const {
-    return n_point;
+    return arr_point.size();
 }
 
 double PolygonalChain::perimeter() const {
     int x0 = 0;
     int y0 = 0;
     int x1, y1;
-    double P = 0;
-    if (n_point > 1) {
+    double perimeter = 0;
+    if (arr_point.size() > 1) {
         x0 = arr_point[0].getX();
         y0 = arr_point[0].getY();
     }
-    for (int i = 1; i < n_point; i++) {
+    for (unsigned int i = 1; i < arr_point.size(); i++) {
         x1 = arr_point[i].getX();
         y1 = arr_point[i].getY();
-        P = P + sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2));
+        perimeter = perimeter + sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2));
         x0 = x1;
         y0 = y1;
     }
-    return P;
+    return perimeter;
 }
 
 ClosedPolygonalChain::ClosedPolygonalChain(int n_points, Point *arr_points)
@@ -83,11 +81,11 @@ ClosedPolygonalChain::ClosedPolygonalChain(const ClosedPolygonalChain &other)
 double ClosedPolygonalChain::perimeter() const {
     double P = PolygonalChain::perimeter();
 
-    if (n_point > 2) {
+    if (arr_point.size() > 2) {
         int x0 = arr_point[0].getX();
         int y0 = arr_point[0].getY();
-        int x1 = arr_point[n_point - 1].getX();
-        int y1 = arr_point[n_point - 1].getY();
+        int x1 = arr_point[arr_point.size() - 1].getX();
+        int y1 = arr_point[arr_point.size() - 1].getY();
         P = P + sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2));
     }
 
@@ -102,31 +100,31 @@ Polygon::Polygon(const Polygon &other)
 
 
 double Polygon::area() const {
-    //todo S is capital? we are not in maths
-    //todo you dont need double
-    double S = 0;
-    if (n_point > 2) {
+    //fixed S is capital? we are not in maths
+    //?todo you dont need double
+    double square = 0;
+    if (arr_point.size() > 2) {
         int x0 = arr_point[0].getX();
         int y0 = arr_point[0].getY();
         int x1, y1;
 
-        for (int i = 1; i < n_point; i++) {
+        for (unsigned int i = 1; i < arr_point.size(); i++) {
             x1 = arr_point[i].getX();
             y1 = arr_point[i].getY();
-            S = S + x0 * y1 - x1 * y0;
+            square = square + x0 * y1 - x1 * y0;
             x0 = x1;
             y0 = y1;
         }
         x0 = arr_point[0].getX();
         y0 = arr_point[0].getY();
-        x1 = arr_point[n_point - 1].getX();
-        y1 = arr_point[n_point - 1].getY();
-        S = S + x0 * y1 - x1 * y0;
-        S = std::abs(S) / 2;
+        x1 = arr_point[arr_point.size() - 1].getX();
+        y1 = arr_point[arr_point.size() - 1].getY();
+        square = square + x0 * y1 - x1 * y0;
+        square= std::abs(square) / 2;
 
     }
 
-    return S;
+    return square;
 }
 
 
@@ -138,18 +136,15 @@ Triangle::Triangle(const Triangle &other)
 
 
 bool Triangle::hasRightAngle() const {
-    //todo u dont need double too
-    double length[3];
+    //fixed u dont need double too
+    int length[3];
     length[0] = pow(arr_point[1].getX() - arr_point[0].getX(), 2) + (pow(arr_point[1].getY() - arr_point[0].getY(), 2));
     length[1] = pow(arr_point[2].getX() - arr_point[1].getX(), 2) + (pow(arr_point[2].getY() - arr_point[1].getY(), 2));
     length[2] = pow(arr_point[0].getX() - arr_point[2].getX(), 2) + (pow(arr_point[0].getY() - arr_point[2].getY(), 2));
+    //fixed return expression
+    return (((length[0] + length[1] == length[2]) || (length[0] + length[2] == length[1]) ||
+        (length[1] + length[2] == length[0])));
 
-    //todo return expression
-    if ((length[0] + length[1] == length[2]) || (length[0] + length[2] == length[1]) ||
-        (length[1] + length[2] == length[0])) {
-        return true;
-    } else
-        return false;
 }
 
 Trapezoid::Trapezoid(int n_points, Point *arr_points)
@@ -184,7 +179,7 @@ double RegularPolygon::perimeter() const {
     x1 = arr_point[1].getX();
     y1 = arr_point[1].getY();
     P = P + sqrt(pow((x1 - x0), 2) + pow((y1 - y0), 2));
-    P = P * n_point;
+    P = P * arr_point.size();
 
 
     return P;
@@ -192,15 +187,13 @@ double RegularPolygon::perimeter() const {
 
 
 double RegularPolygon::area() const {
-    double S = 0;
-    //todo const should be static private
-    double pi = 3.1415926535;
-    double P = RegularPolygon::perimeter();
-    if (n_point > 2) {
-        S = P * P / (n_point * 4 * tan(pi / n_point));
+    //fixed const should be static private
 
+    double square = 0;
+    double P = RegularPolygon::perimeter();
+    if (arr_point.size() > 2) {
+        square = P * P / (arr_point.size() * 4 * tan(pi / arr_point.size()));
     }
 
-
-    return S;
+    return square;
 }
