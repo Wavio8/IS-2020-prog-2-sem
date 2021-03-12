@@ -61,7 +61,9 @@ public:
     explicit ClosedPolygonalChain(int n_points = 0, Point *arr_points = {});
 
     ClosedPolygonalChain(const ClosedPolygonalChain &other);
-
+    
+    //todo i dont think it works
+    
     using PolygonalChain::operator=;
 
     double perimeter() const override;
@@ -111,6 +113,7 @@ public:
 
 class RegularPolygon : public Polygon {
 private:
+    //todo static
     const double  pi = 3.1415926535;
 public:
     RegularPolygon(int n_points = 0, Point *arr_points = {});

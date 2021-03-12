@@ -100,7 +100,6 @@ Polygon::Polygon(const Polygon &other)
 
 
 double Polygon::area() const {
-    //fixed S is capital? we are not in maths
     //?todo you dont need double
     double square = 0;
     if (arr_point.size() > 2) {
@@ -121,7 +120,6 @@ double Polygon::area() const {
         y1 = arr_point[arr_point.size() - 1].getY();
         square = square + x0 * y1 - x1 * y0;
         square= std::abs(square) / 2;
-
     }
 
     return square;
@@ -136,12 +134,10 @@ Triangle::Triangle(const Triangle &other)
 
 
 bool Triangle::hasRightAngle() const {
-    //fixed u dont need double too
     int length[3];
     length[0] = pow(arr_point[1].getX() - arr_point[0].getX(), 2) + (pow(arr_point[1].getY() - arr_point[0].getY(), 2));
     length[1] = pow(arr_point[2].getX() - arr_point[1].getX(), 2) + (pow(arr_point[2].getY() - arr_point[1].getY(), 2));
     length[2] = pow(arr_point[0].getX() - arr_point[2].getX(), 2) + (pow(arr_point[0].getY() - arr_point[2].getY(), 2));
-    //fixed return expression
     return (((length[0] + length[1] == length[2]) || (length[0] + length[2] == length[1]) ||
         (length[1] + length[2] == length[0])));
 
@@ -171,7 +167,7 @@ RegularPolygon::RegularPolygon(const RegularPolygon &other)
 
 
 double RegularPolygon::perimeter() const {
-
+//todo P shouldnt start with capital letter
     int x1, y1;
     double P = 0;
     int x0 = arr_point[0].getX();
