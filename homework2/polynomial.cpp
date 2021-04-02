@@ -107,6 +107,7 @@ Polynomial operator+=(Polynomial &lhs, const Polynomial &rhs) {
     return lhs;
 }
 
+//todo copy-paste from +=
 //---------------   -=   ----------------
 Polynomial operator-=(Polynomial &lhs, const Polynomial &rhs) {
     if ((lhs.min_exponent <= rhs.min_exponent) && (lhs.max_exponent >= rhs.max_exponent)) {
@@ -144,6 +145,7 @@ Polynomial operator-=(Polynomial &lhs, const Polynomial &rhs) {
     return lhs;
 }
 
+//todo use copy-constructor
 //-------------   +    -----------------
 Polynomial operator+(const Polynomial &lhs, const Polynomial &rhs) {
     Polynomial addition;
@@ -187,6 +189,7 @@ Polynomial operator*(int value, const Polynomial &rhs) {
 
 //---------- *= ----------------
 Polynomial &Polynomial::operator*=(const int value) {
+    //todo use for_each
     for (int i = 0; i < max_exponent - min_exponent + 1; i++) {
         array[i] = array[i] * value;
     }
@@ -223,6 +226,7 @@ Polynomial operator/(const Polynomial &lhs, int value) {
     for (int i = 0; i < lhs.max_exponent - lhs.min_exponent + 1; i++) {
         division.array[i] = lhs.array[i] / value;
     }
+    //todo make function for it, it doesnt connect with division
     int flag_max = 0;
     int now_power = lhs.min_exponent;
     int flag_min = 0;
@@ -258,6 +262,7 @@ Polynomial operator/(const Polynomial &lhs, int value) {
 
 }
 
+//todo / from /=
 Polynomial &Polynomial::operator/=(const int value) {
     *this = *this / value;
     return *this;
@@ -305,6 +310,7 @@ int &Polynomial::operator[](int value) {
 
 }
 
+//todo get O(n)
 double Polynomial::get(int value) {
     double res = 0;
     for (int i = 0; i < max_exponent - min_exponent + 1; i++) {

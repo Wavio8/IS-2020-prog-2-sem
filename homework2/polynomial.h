@@ -19,6 +19,7 @@ public:
     Polynomial &operator=(const Polynomial &other);
     friend bool operator==(const Polynomial& lhs,const Polynomial& rhs);
     friend bool operator!=(const Polynomial& lhs,const Polynomial& rhs);
+    //todo += as method (not friend function) that returns Polynomial&
     friend Polynomial operator+=( Polynomial& lhs,const Polynomial& rhs);
     friend Polynomial operator-=( Polynomial& lhs,const Polynomial& rhs);
     friend Polynomial operator+(const Polynomial& lhs,const Polynomial& rhs);
