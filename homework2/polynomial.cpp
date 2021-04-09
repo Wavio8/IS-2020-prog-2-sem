@@ -106,12 +106,12 @@ Polynomial& Polynomial:: operator+=(const Polynomial &rhs) {
 
     return *this;
 }
-//todo without creating new object
+//fixed without creating new object
 //---------------   -=   ----------------
 Polynomial operator-=(Polynomial &lhs, const Polynomial &rhs) {
-    Polynomial copy=rhs;
-    for_each(copy.array,copy.array+copy.max_exponent-copy.min_exponent+1,[](int &i){i-=i;});
-    lhs+=copy;
+    for_each(rhs.array,rhs.array+rhs.max_exponent-rhs.min_exponent+1,[](int &i){i-=i;});
+    lhs+=rhs;
+    for_each(rhs.array,rhs.array+rhs.max_exponent-rhs.min_exponent+1,[](int &i){i-=i;});
     return lhs;
 
 }
@@ -338,6 +338,8 @@ ostream &operator<<(ostream &stream, const Polynomial &polynom) {
 Polynomial::~Polynomial() {
     delete[] array;
 }
+
+
 
 
 
