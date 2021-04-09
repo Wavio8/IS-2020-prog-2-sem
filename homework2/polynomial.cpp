@@ -5,7 +5,7 @@
 #include <sstream>
 #include <iostream>
 #include "cmath"
-
+#include <algorithm>
 using namespace std;
 
 Polynomial::Polynomial() {
@@ -63,36 +63,36 @@ bool operator!=(const Polynomial &lhs, const Polynomial &rhs) {
 }
 
 //-----------   +=    ---------------------
-Polynomial operator+=(Polynomial &lhs, const Polynomial &rhs) {
+Polynomial& Polynomial:: operator+=(const Polynomial &rhs) {
 
-    if ((lhs.min_exponent <= rhs.min_exponent) && (lhs.max_exponent >= rhs.max_exponent)) {
+    if ((min_exponent <= rhs.min_exponent) && (max_exponent >= rhs.max_exponent)) {
 
-        int now_power = lhs.min_exponent;
+        int now_power = min_exponent;
 
         int i_rhs = 0;
-        for (int i = 0; i < lhs.max_exponent - lhs.min_exponent + 1; i++, now_power++) {
+        for (int i = 0; i < max_exponent - min_exponent + 1; i++, now_power++) {
             if ((rhs.min_exponent <= now_power) && (rhs.max_exponent >= now_power)) {
-                lhs.array[i] = lhs.array[i] + rhs.array[i_rhs];
+                array[i] = array[i] + rhs.array[i_rhs];
                 i_rhs++;
             }
 
         }
 
-       
+
     } else {
-        int *add_array = new int[max(lhs.max_exponent, rhs.max_exponent) - min(lhs.min_exponent, rhs.min_exponent) + 1];
-        int now_power = min(lhs.min_exponent, rhs.min_exponent);
+        int *add_array = new int[max(max_exponent, rhs.max_exponent) - min(min_exponent, rhs.min_exponent) + 1];
+        int now_power = min(min_exponent, rhs.min_exponent);
         int i_rhs = 0;
         int i_lhs = 0;
-        for (int i = 0; i < max(lhs.max_exponent, rhs.max_exponent) - min(lhs.min_exponent, rhs.min_exponent) +
+        for (int i = 0; i < max(max_exponent, rhs.max_exponent) - min(min_exponent, rhs.min_exponent) +
                             1; i++, now_power++) {
             if ((rhs.min_exponent <= now_power && rhs.max_exponent >= now_power) &&
-                (lhs.min_exponent <= now_power && lhs.max_exponent >= now_power)) {
-                add_array[i] = lhs.array[i_lhs] + rhs.array[i_rhs];
+                (min_exponent <= now_power && max_exponent >= now_power)) {
+                add_array[i] = array[i_lhs] + rhs.array[i_rhs];
                 i_rhs++;
                 i_lhs++;
-            } else if (lhs.min_exponent <= now_power && lhs.max_exponent >= now_power) {
-                add_array[i] = lhs.array[i_lhs];
+            } else if (min_exponent <= now_power && max_exponent >= now_power) {
+                add_array[i] = array[i_lhs];
                 i_lhs++;
             } else if (rhs.min_exponent <= now_power && rhs.max_exponent >= now_power) {
                 add_array[i] = rhs.array[i_rhs];
@@ -101,55 +101,24 @@ Polynomial operator+=(Polynomial &lhs, const Polynomial &rhs) {
 
         }
 
-        lhs = Polynomial(min(lhs.min_exponent, rhs.min_exponent), max(lhs.max_exponent, rhs.max_exponent), add_array);
+        *this= Polynomial(min(min_exponent, rhs.min_exponent), max(max_exponent, rhs.max_exponent), add_array);
     }
 
-    return lhs;
+    return *this;
 }
-
-//todo copy-paste from +=
+//fixed copy-paste from +=
 //---------------   -=   ----------------
 Polynomial operator-=(Polynomial &lhs, const Polynomial &rhs) {
-    if ((lhs.min_exponent <= rhs.min_exponent) && (lhs.max_exponent >= rhs.max_exponent)) {
-        int now_power = lhs.min_exponent;
-        int i_rhs = 0;
-        for (int i = 0; i < lhs.max_exponent - lhs.min_exponent + 1; i++, now_power++) {
-            if (rhs.min_exponent >= now_power && rhs.max_exponent <= now_power) {
-                lhs.array[i] = lhs.array[i] - rhs.array[i_rhs];
-                i_rhs++;
-            }
-        }
-
-    } else {
-        int *add_array = new int[max(lhs.max_exponent, rhs.max_exponent) - min(lhs.min_exponent, rhs.min_exponent) + 1];
-        int now_power = min(lhs.min_exponent, rhs.min_exponent);
-        int i_rhs = 0;
-        int i_lhs = 0;
-        for (int i = 0; i < max(lhs.max_exponent, rhs.max_exponent) - min(lhs.min_exponent, rhs.min_exponent) +
-                            1; i++, now_power++) {
-            if ((rhs.min_exponent >= now_power && rhs.max_exponent <= now_power) &&
-                (lhs.min_exponent >= now_power && lhs.max_exponent <= now_power)) {
-                add_array[i] = lhs.array[i_lhs] - rhs.array[i_rhs];
-                i_rhs++;
-                i_lhs++;
-            } else if (lhs.min_exponent >= now_power && lhs.max_exponent <= now_power) {
-                add_array[i] = lhs.array[i_lhs];
-                i_lhs++;
-            } else if (rhs.min_exponent >= now_power && rhs.max_exponent <= now_power) {
-                add_array[i] = -rhs.array[i_rhs];
-                i_rhs++;
-            }
-        }
-        lhs = Polynomial(min(lhs.min_exponent, rhs.min_exponent), max(lhs.max_exponent, rhs.max_exponent), add_array);
-    }
+    Polynomial copy=rhs;
+    for_each(copy.array,copy.array+copy.max_exponent-copy.min_exponent+1,[](int &i){i-=i;});
+    lhs+=copy;
     return lhs;
-}
 
-//todo use copy-constructor
+}
+//fixed use copy-constructor
 //-------------   +    -----------------
 Polynomial operator+(const Polynomial &lhs, const Polynomial &rhs) {
-    Polynomial addition;
-    addition = lhs;
+    Polynomial addition=lhs;
     addition += rhs;
 
     return addition;
@@ -189,10 +158,8 @@ Polynomial operator*(int value, const Polynomial &rhs) {
 
 //---------- *= ----------------
 Polynomial &Polynomial::operator*=(const int value) {
-    //todo use for_each
-    for (int i = 0; i < max_exponent - min_exponent + 1; i++) {
-        array[i] = array[i] * value;
-    }
+    //fixed use for_each
+    std::for_each(array,array+max_exponent-min_exponent+1,[&value](int &i){i=i*value;});
     return *this;
 }
 
@@ -221,50 +188,52 @@ Polynomial &Polynomial::operator*=(const Polynomial &rhs) {
 }
 
 Polynomial operator/(const Polynomial &lhs, int value) {
-    Polynomial division;
-    division = lhs;
-    for (int i = 0; i < lhs.max_exponent - lhs.min_exponent + 1; i++) {
-        division.array[i] = lhs.array[i] / value;
-    }
-    //todo make function for it, it doesnt connect with division
+    Polynomial division=lhs;
+    division/=value;
+    return division;
+
+}
+void find_max_min(Polynomial &left){
     int flag_max = 0;
-    int now_power = lhs.min_exponent;
+    int now_power = left.min_exponent;
     int flag_min = 0;
-    for (int i = 0; i < lhs.max_exponent - lhs.min_exponent + 1; i++, now_power++) {
-        if (division.array[i] != 0) {
-            division.min_exponent = now_power;
+    int copy_left=left.min_exponent;
+    for (int i = 0; i < left.max_exponent - left.min_exponent + 1; i++, now_power++) {
+        if (left.array[i] != 0) {
+            left.min_exponent = now_power;
             flag_min = 1;
             break;
         }
     }
 
-    now_power = lhs.max_exponent;
-    for (int i = lhs.max_exponent - lhs.min_exponent; i >= 0; i--, now_power--) {
-        if (division.array[i] != 0) {
-            division.max_exponent = now_power;
+    now_power = left.max_exponent;
+    for (int i = left.max_exponent - copy_left; i >= 0; i--, now_power--) {
+        if (left.array[i] != 0) {
+            left.max_exponent = now_power;
             flag_max = 1;
             break;
         }
     }
     if (flag_min == 0 || flag_max == 0) {
-        division.max_exponent = 0;
-        division.min_exponent = 0;
+        left.max_exponent = 0;
+        left.min_exponent = 0;
     }
-    Polynomial div;
-    div.array = new int[division.max_exponent - division.min_exponent + 1];
-    div.max_exponent = division.max_exponent;
-    div.min_exponent = div.min_exponent;
-    for (int i = 0; i < division.max_exponent - division.min_exponent + 1; i++) {
-        div.array[i] = division.array[division.min_exponent - lhs.min_exponent + i];
-    }
-
-    return div;
+    delete [] left.array;
+    left.array=new int[left.max_exponent - left.min_exponent + 1];
 
 }
-
-//todo / from /=
+//fixed / from /=
 Polynomial &Polynomial::operator/=(const int value) {
-    *this = *this / value;
+    for (int i = 0; i < max_exponent - min_exponent + 1; i++) {
+        array[i] = array[i] / value;
+    }
+    int lhs_min=min_exponent;
+    //fixed make function for it, it doesnt connect with division
+    find_max_min(*this);
+    for (int i = 0; i < max_exponent - min_exponent + 1; i++) {
+        array[i] = array[min_exponent - lhs_min + i];
+    }
+
     return *this;
 }
 
@@ -309,15 +278,26 @@ int &Polynomial::operator[](int value) {
     return array[value - min_exponent];
 
 }
-
-//todo get O(n)
+//fixed get O(n)
 double Polynomial::get(int value) {
     double res = 0;
-    for (int i = 0; i < max_exponent - min_exponent + 1; i++) {
-        res = res + array[i] * pow(value, min_exponent + i);
+    double res_minus = 0;
+    int now_power=max_exponent;
+    for (int i = max_exponent-min_exponent+1; i >0; i--,now_power--) {
+        if(now_power>=0) {
+            if (i - 1 >= 0) {
+                res = res * value + array[i - 1];
+            } else {
+                res = res * value;
+            }
+        }else if(res_minus==0){
+            res_minus=double (array[i-1])/value;
+        } else
+            res_minus=res_minus/value+array[i-1];
+
     }
 
-    return res;
+    return res+res_minus;
 }
 
 
@@ -363,5 +343,7 @@ ostream &operator<<(ostream &stream, const Polynomial &polynom) {
 Polynomial::~Polynomial() {
     delete[] array;
 }
+
+
 
 
