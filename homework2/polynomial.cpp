@@ -106,7 +106,7 @@ Polynomial& Polynomial:: operator+=(const Polynomial &rhs) {
 
     return *this;
 }
-//fixed copy-paste from +=
+//todo without creating new object
 //---------------   -=   ----------------
 Polynomial operator-=(Polynomial &lhs, const Polynomial &rhs) {
     Polynomial copy=rhs;
@@ -115,7 +115,6 @@ Polynomial operator-=(Polynomial &lhs, const Polynomial &rhs) {
     return lhs;
 
 }
-//fixed use copy-constructor
 //-------------   +    -----------------
 Polynomial operator+(const Polynomial &lhs, const Polynomial &rhs) {
     Polynomial addition=lhs;
@@ -158,7 +157,6 @@ Polynomial operator*(int value, const Polynomial &rhs) {
 
 //---------- *= ----------------
 Polynomial &Polynomial::operator*=(const int value) {
-    //fixed use for_each
     std::for_each(array,array+max_exponent-min_exponent+1,[&value](int &i){i=i*value;});
     return *this;
 }
@@ -222,13 +220,11 @@ void find_max_min(Polynomial &left){
     left.array=new int[left.max_exponent - left.min_exponent + 1];
 
 }
-//fixed / from /=
 Polynomial &Polynomial::operator/=(const int value) {
     for (int i = 0; i < max_exponent - min_exponent + 1; i++) {
         array[i] = array[i] / value;
     }
     int lhs_min=min_exponent;
-    //fixed make function for it, it doesnt connect with division
     find_max_min(*this);
     for (int i = 0; i < max_exponent - min_exponent + 1; i++) {
         array[i] = array[min_exponent - lhs_min + i];
@@ -278,7 +274,6 @@ int &Polynomial::operator[](int value) {
     return array[value - min_exponent];
 
 }
-//fixed get O(n)
 double Polynomial::get(int value) {
     double res = 0;
     double res_minus = 0;
