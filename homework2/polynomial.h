@@ -19,8 +19,8 @@ public:
     Polynomial &operator=(const Polynomial &other);
     friend bool operator==(const Polynomial& lhs,const Polynomial& rhs);
     friend bool operator!=(const Polynomial& lhs,const Polynomial& rhs);
-    //todo += as method (not friend function) that returns Polynomial&
-    friend Polynomial operator+=( Polynomial& lhs,const Polynomial& rhs);
+    //fixed += as method (not friend function) that returns Polynomial&
+    Polynomial& operator+=(const Polynomial& rhs);
     friend Polynomial operator-=( Polynomial& lhs,const Polynomial& rhs);
     friend Polynomial operator+(const Polynomial& lhs,const Polynomial& rhs);
     friend Polynomial operator-(const Polynomial& lhs,const Polynomial& rhs);
@@ -31,6 +31,7 @@ public:
     friend Polynomial operator*(const Polynomial& lhs,const Polynomial& rhs);
     Polynomial& operator*=(const Polynomial& rhs);
     friend Polynomial operator/(const Polynomial& lhs,int value);
+    friend void find_max_min(Polynomial &left);
     Polynomial& operator/=(const int value);
     int operator[](int value) const;
     int& operator[](int value);
@@ -49,3 +50,4 @@ public:
 istream& operator>>(istream& stream, Polynomial &polynom);
 ostream& operator<<(ostream &stream, const Polynomial &polynom);
 #endif //PROGA2LAB_POLYNOMIAL_H
+
