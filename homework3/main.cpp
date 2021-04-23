@@ -309,6 +309,7 @@ int main() {
 
 
     //todo unpacking
+    //for (auto&[key, value] : length_route_bus)
     for (auto &k:length_route_bus)
         if (max_bus_routes < k.second) {
             max_bus_routes = k.second;
