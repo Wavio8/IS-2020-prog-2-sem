@@ -1,0 +1,28 @@
+Pulling https://github.com/Wavio8/IS-2020-prog-2-sem/homework3
+Pull finished
+It's compiled
+Active code page: 65001
+_________________________TASK1__________________________
+Автобусы: маршрут № 211 имеет больше всего остановок = 124
+Трамваи: маршрут № 27 имеет больше всего остановок = 74
+Троллейбусы: маршрут № 11 имеет больше всего остановок = 76
+_________________________TASK2__________________________
+Автобусы: маршрут № 487 имеет самый длинный путь 
+Трамваи: маршрут № 6 имеет самый длинный путь 
+Троллейбусы: маршрут № 5 имеет самый длинный путь 
+_________________________TASK3__________________________
+Улица Приморское шоссе имеет больше всего остановок = 151
+
+main.cpp: In function 'int main()':
+main.cpp:283:31: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<Transports>::size_type' {aka 'unsigned int'} [-Wsign-compare]
+  283 |             for (int j = 0; j < routes_with_street[k].buses.size() - 1; j++) {
+      |                             ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main.cpp:289:31: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<Transports>::size_type' {aka 'unsigned int'} [-Wsign-compare]
+  289 |             for (int j = 0; j < routes_with_street[k].trams.size() - 1; j++) {
+      |                             ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+main.cpp:295:31: warning: comparison of integer expressions of different signedness: 'int' and 'std::vector<Transports>::size_type' {aka 'unsigned int'} [-Wsign-compare]
+  295 |             for (int j = 0; j < routes_with_street[k].trolleybuses.size() - 1; j++) {
+      |                             ~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+
