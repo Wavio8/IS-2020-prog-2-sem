@@ -10,6 +10,8 @@
 #include <set>
 #include <cmath>
 
+const double M_PI = 3.14159;
+
 using namespace std;
 
 class Transports {
