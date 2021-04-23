@@ -94,6 +94,7 @@ int main() {
     std::map<std::string, int> count_bus_routes;
     std::map<std::string, int> count_tram_routes;
     std::map<std::string, int> count_trolleybus_routes;
+    std::set<std::string> all_routes_name;
 
 
     for (pugi::xml_node i = data.child("dataset").child("transport_station"); i; i = i.next_sibling(
@@ -120,11 +121,13 @@ int main() {
                 size_coordinate = route.find('.', start + 1);
             }
             all_routes.push_back(route.substr(start, size_coordinate - start));
+            all_routes_name.insert(route.substr(start, size_coordinate));
             start = size_coordinate + 1;
         }
         if (route.size() > start) {
             size_coordinate = route.size() - start;
             all_routes.push_back(route.substr(start, size_coordinate));
+            all_routes_name.insert(route.substr(start, size_coordinate));
         }
 
 
@@ -214,7 +217,7 @@ int main() {
                 count_trolleybus_routes[k]++;  //in route 23- 5 station for trolleybus
             }
         }
-        
+
     }
 
     int max_bus_routes = 0;
@@ -250,7 +253,7 @@ int main() {
               << max_trolleybus_routes << '\n';
 
 
-    std::set<std::string> all_routes_name;
+
     std::map<std::string, double> length_route_bus;
     std::map<std::string, double> length_route_tram;
     std::map<std::string, double> length_route_trolleybus;
@@ -258,19 +261,16 @@ int main() {
     for (auto &k:all_station) {
         if (k.get_type_of_vehicle() == "Автобус") {
             for (auto &j:k.get_routes()) {
-                all_routes_name.insert(j);
                 routes_with_street[j].name_route = j;
                 routes_with_street[j].buses.push_back(k);
             }
         } else if (k.get_type_of_vehicle() == "Трамвай") {
             for (auto &j:k.get_routes()) {
-                all_routes_name.insert(j);
                 routes_with_street[j].name_route = j;
                 routes_with_street[j].trams.push_back(k);
             }
         } else if (k.get_type_of_vehicle() == "Троллейбус") {
             for (auto &j:k.get_routes()) {
-                all_routes_name.insert(j);
                 routes_with_street[j].name_route = j;
                 routes_with_street[j].trolleybuses.push_back(k);
             }
@@ -307,7 +307,6 @@ int main() {
         if (max_bus_routes < k.second) {
             max_bus_routes = k.second;
             number_max_routes_bus = k.first;
-            cout << 1;
         }
     for (auto &k:length_route_tram)
         if (max_tram_routes < k.second) {
