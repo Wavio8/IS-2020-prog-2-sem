@@ -64,12 +64,15 @@ public:
 
 struct Type_vehicle_routes {
     std::string name_route;
+    //todo in one map(?)
     std::vector<Transports> buses;
     std::vector<Transports> trams;
     std::vector<Transports> trolleybuses;
 
 };
 
+
+//todo strange constants
 double length(Transports &first, Transports &second) {
     double x1_rad = first.getX() * M_PI / 180;
     double y1_rad = first.getY() * M_PI / 180;
@@ -305,6 +308,7 @@ int main() {
     number_max_routes_bus = ' ';
 
 
+    //todo unpacking
     for (auto &k:length_route_bus)
         if (max_bus_routes < k.second) {
             max_bus_routes = k.second;
