@@ -10,7 +10,7 @@
 #include <set>
 #include <cmath>
 
-const double M_PI = 3.14159;
+//const double M_PI = 3.14159;
 
 using namespace std;
 
@@ -64,21 +64,21 @@ public:
 
 struct Type_vehicle_routes {
     std::string name_route;
-    //todo in one map(?)
-    std::vector<Transports> buses;
-    std::vector<Transports> trams;
-    std::vector<Transports> trolleybuses;
+    //fixed in one map(?)
+    map<std::string, std::vector<Transports>> type_vehicle;
+//
 
 };
 
 
-//todo strange constants
+//fixed strange constants
 double length(Transports &first, Transports &second) {
     double x1_rad = first.getX() * M_PI / 180;
     double y1_rad = first.getY() * M_PI / 180;
     double x2_rad = second.getX() * M_PI / 180;
     double y2_rad = second.getY() * M_PI / 180;
-    double len = 2 * 6371 * asin(sqrt(
+    int r_earth = 6371;
+    double len = 2 * r_earth * asin(sqrt(
             pow(sin((x2_rad - x1_rad) / 2), 2) + cos(x1_rad) * cos(x2_rad) * pow(sin((y2_rad - y1_rad) / 2), 2)));
     return len;
 }
@@ -96,9 +96,8 @@ int main() {
 
     std::map<std::string, Type_vehicle_routes> routes_with_street;
 
-    std::map<std::string, int> count_bus_routes;
-    std::map<std::string, int> count_tram_routes;
-    std::map<std::string, int> count_trolleybus_routes;
+
+    std::map<std::string, std::map<std::string, int>> count_all_type_routes;
     std::set<std::string> all_routes_name;
 
 
@@ -208,18 +207,18 @@ int main() {
         all_station.push_back(new_station);
         if (strcmp("Автобус", i.child_value("type_of_vehicle")) == 0) {
             for (auto &k: all_routes) {
-                count_bus_routes[k]++;  //in route 23- 5 station for bus
+                count_all_type_routes["Автобус"][k]++;  //in route 23- 5 station for bus
             }
 
         }
         if (strcmp("Трамвай", i.child_value("type_of_vehicle")) == 0) {
             for (auto &k: all_routes) {
-                count_tram_routes[k]++;  //in route 23- 5 station for tram
+                count_all_type_routes["Трамвай"][k]++;  //in route 23- 5 station for tram
             }
         }
         if (strcmp("Троллейбус", i.child_value("type_of_vehicle")) == 0) {
             for (auto &k: all_routes) {
-                count_trolleybus_routes[k]++;  //in route 23- 5 station for trolleybus
+                count_all_type_routes["Троллейбус"][k]++;  //in route 23- 5 station for trolleybus
             }
         }
 
@@ -228,35 +227,35 @@ int main() {
     int max_bus_routes = 0;
     int max_tram_routes = 0;
     int max_trolleybus_routes = 0;
-    std::string number_max_routes_bus;
-    std::string number_max_routes_tram;
-    std::string number_max_routes_trolleybus;
-    for (auto &k: count_bus_routes) {
-        if (max_bus_routes < k.second) {
-            max_bus_routes = k.second;
-            number_max_routes_bus = k.first;
+
+
+    std::map<std::string, std::string> number_max_routes_type;
+    for (auto &[key, value]:  count_all_type_routes["Автобус"]) {
+        if (max_bus_routes < value) {
+            max_bus_routes = value;
+            number_max_routes_type["Автобус"] = key;
         }
     }
-    for (auto &k: count_tram_routes) {
-        if (max_tram_routes < k.second) {
-            max_tram_routes = k.second;
-            number_max_routes_tram = k.first;
+    for (auto &[key, value]:count_all_type_routes["Трамвай"]) {
+        if (max_tram_routes < value) {
+            max_tram_routes = value;
+            number_max_routes_type["Трамвай"] = key;
         }
     }
-    for (auto &k: count_trolleybus_routes) {
-        if (max_trolleybus_routes < k.second) {
-            max_trolleybus_routes = k.second;
-            number_max_routes_trolleybus = k.first;
+    for (auto &[key, value]:count_all_type_routes["Троллейбус"]) {
+        if (max_trolleybus_routes < value) {
+            max_trolleybus_routes = value;
+            number_max_routes_type["Троллейбус"] = key;
         }
     }
     std::cout << "_________________________TASK1__________________________" << '\n';
-    std::cout << "Автобусы: маршрут № " << number_max_routes_bus << " имеет больше всего остановок = " << max_bus_routes
+    std::cout << "Автобусы: маршрут № " << number_max_routes_type["Автобус"] << " имеет больше всего остановок = "
+              << max_bus_routes
               << '\n';
-    std::cout << "Трамваи: маршрут № " << number_max_routes_tram << " имеет больше всего остановок = "
+    std::cout << "Трамваи: маршрут № " << number_max_routes_type["Трамвай"] << " имеет больше всего остановок = "
               << max_tram_routes << '\n';
-    std::cout << "Троллейбусы: маршрут № " << number_max_routes_trolleybus << " имеет больше всего остановок = "
+    std::cout << "Троллейбусы: маршрут № " << number_max_routes_type["Троллейбус"] << " имеет больше всего остановок = "
               << max_trolleybus_routes << '\n';
-
 
 
     std::map<std::string, double> length_route_bus;
@@ -267,78 +266,81 @@ int main() {
         if (k.get_type_of_vehicle() == "Автобус") {
             for (auto &j:k.get_routes()) {
                 routes_with_street[j].name_route = j;
-                routes_with_street[j].buses.push_back(k);
+                routes_with_street[j].type_vehicle["Автобус"].push_back(k);
             }
         } else if (k.get_type_of_vehicle() == "Трамвай") {
             for (auto &j:k.get_routes()) {
                 routes_with_street[j].name_route = j;
-                routes_with_street[j].trams.push_back(k);
+                routes_with_street[j].type_vehicle["Трамвай"].push_back(k);
             }
         } else if (k.get_type_of_vehicle() == "Троллейбус") {
             for (auto &j:k.get_routes()) {
                 routes_with_street[j].name_route = j;
-                routes_with_street[j].trolleybuses.push_back(k);
+                routes_with_street[j].type_vehicle["Троллейбус"].push_back(k);
             }
         }
     }
     for (auto &k:all_routes_name) {
-        if (!routes_with_street[k].buses.empty()) {
-            for (int j = 0; j < routes_with_street[k].buses.size() - 1; j++) {
+        if (!routes_with_street[k].type_vehicle["Автобус"].empty()) {
+            for (unsigned int j = 0; j < routes_with_street[k].type_vehicle["Автобус"].size() - 1; j++) {
                 length_route_bus[k] = length_route_bus[k] +
-                                      length(routes_with_street[k].buses[j], routes_with_street[k].buses[j + 1]);
+                                      length(routes_with_street[k].type_vehicle["Автобус"][j],
+                                             routes_with_street[k].type_vehicle["Автобус"][j + 1]);
             }
         }
-        if (!routes_with_street[k].trams.empty()) {
-            for (int j = 0; j < routes_with_street[k].trams.size() - 1; j++) {
+        if (!routes_with_street[k].type_vehicle["Трамвай"].empty()) {
+            for (unsigned int j = 0; j < routes_with_street[k].type_vehicle["Трамвай"].size() - 1; j++) {
                 length_route_tram[k] = length_route_tram[k] +
-                                       length(routes_with_street[k].trams[j], routes_with_street[k].trams[j + 1]);
+                                       length(routes_with_street[k].type_vehicle["Трамвай"][j],
+                                              routes_with_street[k].type_vehicle["Трамвай"][j + 1]);
             }
         }
-        if (!routes_with_street[k].trolleybuses.empty()) {
-            for (int j = 0; j < routes_with_street[k].trolleybuses.size() - 1; j++) {
-                length_route_trolleybus[k] = length_route_trolleybus[k] + length(routes_with_street[k].trolleybuses[j],
-                                                                                 routes_with_street[k].trolleybuses[j +
-                                                                                                                    1]);
+        if (!routes_with_street[k].type_vehicle["Троллейбус"].empty()) {
+            for (unsigned int j = 0; j < routes_with_street[k].type_vehicle["Троллейбус"].size() - 1; j++) {
+                length_route_trolleybus[k] =
+                        length_route_trolleybus[k] + length(routes_with_street[k].type_vehicle["Троллейбус"][j],
+                                                            routes_with_street[k].type_vehicle["Троллейбус"][j +1]);
             }
         }
     }
     max_bus_routes = 0;
     max_tram_routes = 0;
     max_trolleybus_routes = 0;
-    number_max_routes_bus = ' ';
 
 
-    //todo unpacking
+
+    //fixed unpacking
     //for (auto&[key, value] : length_route_bus)
-    for (auto &k:length_route_bus)
-        if (max_bus_routes < k.second) {
-            max_bus_routes = k.second;
-            number_max_routes_bus = k.first;
+    for (auto &[key, value]:length_route_bus)
+        if (max_bus_routes < value) {
+            max_bus_routes = value;
+            number_max_routes_type["Автобус"] = key;
         }
-    for (auto &k:length_route_tram)
-        if (max_tram_routes < k.second) {
-            max_tram_routes = k.second;
-            number_max_routes_tram = k.first;
+    for (auto &[key, value]:length_route_tram)
+        if (max_tram_routes < value) {
+            max_tram_routes = value;
+            number_max_routes_type["Трамвай"] = key;
         }
-    for (auto &k:length_route_trolleybus)
-        if (max_trolleybus_routes < k.second) {
-            max_trolleybus_routes = k.second;
-            number_max_routes_trolleybus = k.first;
+    for (auto &[key, value]:length_route_trolleybus)
+        if (max_trolleybus_routes < value) {
+            max_trolleybus_routes = value;
+            number_max_routes_type["Троллейбус"] = key;
         }
 
 
     std::cout << "_________________________TASK2__________________________" << '\n';
-    std::cout << "Автобусы: маршрут № " << number_max_routes_bus << " имеет самый длинный путь " << '\n';
-    std::cout << "Трамваи: маршрут № " << number_max_routes_tram << " имеет самый длинный путь " << '\n';
-    std::cout << "Троллейбусы: маршрут № " << number_max_routes_trolleybus << " имеет самый длинный путь " << '\n';
+    std::cout << "Автобусы: маршрут № " << number_max_routes_type["Автобус"] << " имеет самый длинный путь " << '\n';
+    std::cout << "Трамваи: маршрут № " << number_max_routes_type["Трамвай"] << " имеет самый длинный путь " << '\n';
+    std::cout << "Троллейбусы: маршрут № " << number_max_routes_type["Троллейбус"] << " имеет самый длинный путь "
+              << '\n';
 
 
     int max_station_street = 0;
     std::string name_max_station_street;
-    for (auto &k: map_location) {
-        if (max_station_street < k.second) {
-            max_station_street = k.second;
-            name_max_station_street = k.first;
+    for (auto &[key, value]: map_location) {
+        if (max_station_street < value) {
+            max_station_street = value;
+            name_max_station_street = key;
         }
     }
 
