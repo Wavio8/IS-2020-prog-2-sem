@@ -72,6 +72,7 @@ struct Type_vehicle_routes {
 
 
 //fixed strange constants
+//todo consts should be consts and CAPSED
 double length(Transports &first, Transports &second) {
     double x1_rad = first.getX() * M_PI / 180;
     double y1_rad = first.getY() * M_PI / 180;
@@ -257,7 +258,7 @@ int main() {
     std::cout << "Троллейбусы: маршрут № " << number_max_routes_type["Троллейбус"] << " имеет больше всего остановок = "
               << max_trolleybus_routes << '\n';
 
-
+    //todo copy-paste
     std::map<std::string, double> length_route_bus;
     std::map<std::string, double> length_route_tram;
     std::map<std::string, double> length_route_trolleybus;
