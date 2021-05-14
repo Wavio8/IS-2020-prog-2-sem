@@ -58,6 +58,7 @@ bool oneOf(Iterator begin, Iterator end, Predicate predicate) {
     return true;
 }
 
+//todo use default template argument std::less
 template<typename Iterator, typename Predicate>
 bool isSorted(Iterator begin, Iterator end, Predicate predicate) {
     while ((begin + 1) != end) {
@@ -82,6 +83,7 @@ bool isSorted(Iterator begin, Iterator end) {
 
 template<typename Iterator, typename Predicate>
 bool isPartitioned(Iterator begin, Iterator end, Predicate predicate) {
+    //todo shorter
     if (predicate(*begin) == true) {
         begin++;
         while (begin != end) {
