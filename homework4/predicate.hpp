@@ -58,9 +58,9 @@ bool oneOf(Iterator begin, Iterator end, Predicate predicate) {
     return true;
 }
 
-//todo use default template argument std::less
-template<typename Iterator, typename Predicate>
-bool isSorted(Iterator begin, Iterator end, Predicate predicate) {
+//fixed use default template argument std::less
+template<typename Iterator, typename Predicate=std::less<>>
+bool isSorted(Iterator begin, Iterator end, Predicate predicate=Predicate{}) {
     while ((begin + 1) != end) {
         if (predicate(*begin, *(begin + 1)) == false) {
             return false;
@@ -70,51 +70,27 @@ bool isSorted(Iterator begin, Iterator end, Predicate predicate) {
     return true;
 }
 
-template<typename Iterator>
-bool isSorted(Iterator begin, Iterator end) {
-    while ((begin + 1) != end) {
-        if ((*begin) > *(begin + 1)) {
+
+
+template<typename Iterator, typename Predicate>
+bool isPartitioned(Iterator begin, Iterator end, Predicate predicate) {
+    //fixed shorter
+    begin++;
+    bool flag=predicate(*begin);
+    while (begin != end) {
+        if (predicate(*begin) == !flag) {
+            break;
+        }
+        begin++;
+    }
+    while (begin != end) {
+        if (predicate(*begin) ==flag) {
             return false;
         }
         begin++;
     }
     return true;
-}
 
-template<typename Iterator, typename Predicate>
-bool isPartitioned(Iterator begin, Iterator end, Predicate predicate) {
-    //todo shorter
-    if (predicate(*begin) == true) {
-        begin++;
-        while (begin != end) {
-            if (predicate(*begin) == false) {
-                break;
-            }
-            begin++;
-        }
-        while (begin != end) {
-            if (predicate(*begin) == true) {
-                return false;
-            }
-            begin++;
-        }
-        return true;
-    } else {
-        begin++;
-        while (begin != end) {
-            if (predicate(*begin) == true) {
-                break;
-            }
-            begin++;
-        }
-        while (begin != end) {
-            if (predicate(*begin) == false) {
-                return false;
-            }
-            begin++;
-        }
-        return true;
-    }
 }
 
 template<typename Iterator, typename Predicate>
