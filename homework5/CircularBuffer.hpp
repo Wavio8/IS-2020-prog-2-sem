@@ -117,7 +117,7 @@ public:
     int get_now_size() {
         return now_size;
     }
-
+    //todo O(1)
     void addFirst(T value) {
 
         for (int i = now_size; i > 0; i--) {
@@ -163,6 +163,7 @@ public:
 
     T &operator[](int x) {
         if (x < 0 || x >= now_size) {
+            //todo string into exception (size of buffer)
             std::cout << "Sorry,impossible to go by index: ";
             throw std::out_of_range("out of range");
         } else {
@@ -187,6 +188,7 @@ public:
         }
         delete[] circular_buffer;
         circular_buffer = buffer;
+        //todo memory
         delete[] buffer;
 
     }
