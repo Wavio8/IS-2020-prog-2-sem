@@ -1,0 +1,10 @@
+Pulling https://github.com/Wavio8/IS-2020-prog-2-sem/homework6
+Pull finished
+main.cpp:2:10: fatal error: cmake-build-debug/CubeRubiks.hpp: No such file or directory
+    2 | #include "cmake-build-debug/CubeRubiks.hpp"
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+compilation terminated.
+make: *** [makefile:2: all] Error 1
+
+
+
