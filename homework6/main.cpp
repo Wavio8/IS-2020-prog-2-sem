@@ -1,5 +1,5 @@
 #include <iostream>
-#include "cmake-build-debug/CubeRubiks.hpp"
+#include "CubeRubiks.hpp"
 
 int main() {
     char cube[6][3][3] = {{{'G', 'W', 'B'}, {'O', 'W', 'G'}, {'Y', 'W', 'R'}},
