@@ -1,0 +1,22 @@
+Pulling https://github.com/Wavio8/IS-2020-prog-2-sem/homework4
+Pull finished
+In file included from main.cpp:1:
+predicate.hpp: In instantiation of 'Iterator findBackward(Iterator, Iterator, Predicate) [with Iterator = myForwardIterator; Predicate = int]':
+main.cpp:60:2:   required from here
+predicate.hpp:109:14: error: no matching function for call to 'myForwardIterator::myForwardIterator()'
+  109 |     Iterator ans;
+      |              ^~~
+main.cpp:21:5: note: candidate: 'myForwardIterator::myForwardIterator(std::vector<int>::iterator)'
+   21 |     myForwardIterator(vector<int>::iterator it) : T(it){}
+      |     ^~~~~~~~~~~~~~~~~
+main.cpp:21:5: note:   candidate expects 1 argument, 0 provided
+main.cpp:13:7: note: candidate: 'constexpr myForwardIterator::myForwardIterator(const myForwardIterator&)'
+   13 | class myForwardIterator : public vector<int>::iterator {
+      |       ^~~~~~~~~~~~~~~~~
+main.cpp:13:7: note:   candidate expects 1 argument, 0 provided
+main.cpp:13:7: note: candidate: 'constexpr myForwardIterator::myForwardIterator(myForwardIterator&&)'
+main.cpp:13:7: note:   candidate expects 1 argument, 0 provided
+make: *** [makefile:2: all] Error 1
+
+
+
